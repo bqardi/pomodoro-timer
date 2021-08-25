@@ -1,0 +1,23 @@
+.Pomodoro{
+	&__button{
+		background-color: dodgerblue;
+		border: none;
+		color: white;
+		padding: 0.7rem 1.2rem;
+		min-width: 80px;
+		cursor: pointer;
+		border: 2px solid transparent;
+		&:hover{
+			filter: grayscale(0.2);
+		}
+		&:focus{
+			outline: none;
+			border: 2px solid rgb(22, 107, 192);
+		}
+		&--disabled{
+			background-color: gainsboro;
+			color: gray;
+			cursor: default;
+		}
+	}
+}

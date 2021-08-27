@@ -1,0 +1,157 @@
+.Todo{
+	$fieldHeight: 48px;
+	&__form{
+		margin: 0 auto;
+		max-width: 750px;
+		padding: 2rem 1rem 0;
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1rem;
+		@media screen and (min-width: 450px) {
+			grid-template-columns: 150px 3fr;
+			gap: 2rem;
+		}
+	}
+	&__label{
+		font-size: 1.1rem;
+	}
+	&__field{
+		position: relative;
+	}
+	&__description{
+		position: relative;
+		margin: 0.5rem 0;
+	}
+	&__input{
+		width: 100%;
+		height: $fieldHeight;
+		padding: 0 56px 0 1.25rem;
+		border: 1px solid #bbb;
+		&--error{
+			border-color: crimson;
+			background-color: rgb(255, 233, 233);
+		}
+		&:focus{
+			outline: none;
+			box-shadow: 0 0 0 2px dodgerblue;
+		}
+	}
+	&__float{
+		position: absolute;
+		top: 1px;
+		right: 1px;
+		bottom: 1px;
+	}
+	&__button{
+		width: $fieldHeight;
+		height: 100%;
+		border: none;
+		border-left: 1px solid lightgray;
+		background-color: #fafafa;
+		& svg{
+			margin: 0.25rem;
+		}
+		&:hover{
+			background-color: #f3f3f3;
+		}
+		&:focus{
+			position: relative;
+			z-index: 1;
+			outline: none;
+			box-shadow: 0 0 0 2px dodgerblue;
+		}
+	}
+	&__error{
+		position: absolute;
+		top: 2px;
+		right: 0;
+		margin: 0;
+		color: crimson;
+	}
+}
+
+.TodoList{
+	padding: 1rem 0 0;
+	max-width: 1100px;
+	margin: 0 auto;
+	&__title{
+		margin: 0 0 0.5rem;
+		padding: 0 1rem;
+		font-size: 1.2rem;
+	}
+	&__item{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		border-top: 1px solid lightgray;
+		cursor: pointer;
+		&:last-child{
+			border-bottom: 1px solid lightgray;
+		}
+		&:hover{
+			background-color: #f9f9f9;
+		}
+		&--completed{
+			color: #b3b3b3;
+			background-color: #f0f0f0;
+			cursor: default;
+			&:hover{
+				background-color: #f0f0f0;
+			}
+		}
+		&--active{
+			color: dodgerblue;
+			background-color: #f0f7ff;
+			cursor: default;
+			&:hover{
+				background-color: #e2f0ff;
+			}
+		}
+	}
+	&__description{
+		flex: 1;
+	}
+	&__rounds{
+		height: 48px;
+		border: none;
+		background-color: transparent;
+		margin: 0;
+		padding: 0 8px 0 1rem;
+		overscroll-behavior-y: contain;
+		cursor: n-resize;
+		&--completed{
+			cursor: default;
+		}
+		&Icon{
+			width: 32px;
+			height: 32px;
+			border: 1px solid lightgray;
+			border-radius: 50%;
+			background-color: #fafafa;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			& svg{
+				margin: 0.25rem;
+				fill: white;
+			}
+			&--completed{
+				background-color: forestgreen;
+				border-color: darkgreen;
+			}
+		}
+		&:hover &Icon{
+			background-color: #f3f3f3;
+			&--completed{
+				background-color: forestgreen;
+				border-color: darkgreen;
+			}
+		}
+		&:focus{
+			outline: none;
+		}
+		&:focus &Icon{
+			box-shadow: 0 0 0 2px dodgerblue;
+		}
+	}
+}

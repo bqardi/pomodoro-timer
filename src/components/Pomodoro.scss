@@ -105,7 +105,7 @@
 	&__time{
 		margin: 0;
 		text-align: center;
-		padding: 3rem 0 2rem;
+		padding: 3rem 0 0;
 		font-size: clamp(4rem, 12vw, 5rem);
 		&--hours{
 			font-size: clamp(0.9em, 11vw, 0.9em);
@@ -119,6 +119,9 @@
 			opacity: 0.5;
 			font-weight: 100;
 		}
+	}
+	&__message{
+		padding: 0 1rem;
 	}
 	&__count{
 		position: absolute;

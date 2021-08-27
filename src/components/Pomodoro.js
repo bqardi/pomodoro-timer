@@ -25,7 +25,7 @@ function Pomodoro(){
 			<div className="Pomodoro__inner">
 				{state.activeTask && <p className="Pomodoro__activeTask">Active task:&nbsp;<span>{state.activeTask.description}</span></p>}
 				<DisplayTime time={convertTime(settings.duration, time)} />
-				<p>{parseString(settings.title, settings.duration)}</p>
+				<p className="Pomodoro__message">{parseString(settings.title, settings.duration)}</p>
 				<div className="Pomodoro__buttons">
 					{state.started
 						? <button

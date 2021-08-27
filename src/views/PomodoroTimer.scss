@@ -1,0 +1,17 @@
+.PomodoroTimer{
+	&__link{
+		position: absolute;
+		right: 0;
+		padding: 8px;
+		&:hover{
+			& svg{
+				opacity: 0.8;
+			}
+		}
+		& svg{
+			width: 32px;
+			height: 32px;
+			fill: white;
+		}
+	}
+}

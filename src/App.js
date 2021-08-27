@@ -3,6 +3,7 @@ import "./App.scss";
 import useGlobalReducer from "./hooks/useGlobalReducer";
 import PomodoroTimer from "./views/PomodoroTimer";
 import {Router} from "@reach/router";
+import Settings from "./views/Settings";
 
 // Define "duration" in minutes:
 const pomodoroSettings = {
@@ -57,6 +58,7 @@ function App() {
 		<GlobalProvider value={{state, dispatch, ACTION_TYPES, pomodoroSettings}}>
 			<Router>
 				<PomodoroTimer path="/" />
+				<Settings path="/settings" />
 			</Router>
 		</GlobalProvider>
 	);

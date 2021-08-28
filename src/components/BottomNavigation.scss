@@ -1,0 +1,44 @@
+.BottomNavigation{
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: var(--menu-height);
+	&--task{
+		background-color: firebrick;
+	}
+	&--break{
+		background-color: forestgreen;
+	}
+	&--longBreak{
+		background-color: dodgerblue;
+	}
+	&__inner{
+		display: flex;
+		justify-content: space-around;
+		max-width: 500px;
+		margin: 0 auto;
+		height: 100%;
+	}
+	&__link{
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		text-decoration: none;
+		font-size: 0.8rem;
+		color: white;
+		min-width: 80px;
+		&:hover{
+			text-decoration: underline;
+			& svg{
+				opacity: 0.8;
+			}
+		}
+		& svg{
+			width: 32px;
+			height: 32px;
+			fill: white;
+		}
+	}
+}

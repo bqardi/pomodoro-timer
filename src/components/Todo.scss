@@ -1,9 +1,10 @@
 .Todo{
 	$fieldHeight: 48px;
+	padding: 2rem 0;
 	&__form{
 		margin: 0 auto;
 		max-width: 750px;
-		padding: 2rem 1rem 0;
+		padding: 0 1rem;
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: 1rem;
@@ -108,16 +109,12 @@
 			}
 		}
 	}
-	&__description{
-		flex: 1;
-	}
 	&__rounds{
 		height: 48px;
 		border: none;
 		background-color: transparent;
 		margin: 0;
 		padding: 0 8px 0 1rem;
-		overscroll-behavior-y: contain;
 		cursor: n-resize;
 		&--completed{
 			cursor: default;
@@ -152,6 +149,37 @@
 		}
 		&:focus &Icon{
 			box-shadow: 0 0 0 2px dodgerblue;
+		}
+	}
+	&__description{
+		flex: 1;
+	}
+	&__delete{
+		width: 48px;
+		height: 48px;
+		border: none;
+		background-color: transparent;
+		& svg{
+			margin: 0.5rem;
+			fill: firebrick;
+		}
+		&:hover{
+			cursor: pointer;
+			& svg{
+				fill: red;
+			}
+		}
+		&--confirm{
+			background-color: firebrick;
+			& svg{
+				fill: white;
+			}
+			&:hover{
+				filter: brightness(1.1);
+				& svg{
+					fill: white;
+				}
+			}
 		}
 	}
 }

@@ -39,10 +39,12 @@ function Todo(){
 	useEffect(() => {
 		var taskList = state.tasks.filter(task => !task.completed);
 		if (taskList.length) {
-			dispatch({type: ACTION_TYPES.ACTIVE_TASK, payload: taskList[0]});
+			var activeTaskIndex = taskList.findIndex(task => task.id === state.activeTask?.id);
+			dispatch({type: ACTION_TYPES.ACTIVE_TASK, payload: taskList[activeTaskIndex === -1 ? 0 : activeTaskIndex]});
 		} else {
 			dispatch({type: ACTION_TYPES.ACTIVE_TASK, payload: null});
 		}
+		// eslint-disable-next-line
 	}, [state.tasks, dispatch, ACTION_TYPES]);
 
 	return (
@@ -101,15 +103,26 @@ function Todo(){
 					{error && <p className="Todo__error">{error}</p>}
 				</div>
 			</form>
-			<div className="TodoList">
-				{state.tasks.length === 0 ? null : <p className="TodoList__title">Task list</p>}
-				{state.tasks.length === 0 ? <p style={{textAlign: "center"}}>No tasks added</p> : null}
-				{state.tasks.filter(task => !task.completed).map(task => <TodoItem key={task.id} task={task} />)}
-			</div>
-			<div className="TodoList">
-				{state.tasks.length === 0 ? null : <p className="TodoList__title">Completed list</p>}
-				{state.tasks.filter(task => task.completed).map(task => <TodoItem key={task.id} task={task} />)}
-			</div>
+			{(() => {
+				var tasks = state.tasks.filter(task => !task.completed);
+				return (
+					<div className="TodoList">
+						{(state.tasks.length === 0 && tasks.length === 0) ? null : <p className="TodoList__title">Task list</p>}
+						{tasks.length === 0 ? <p style={{textAlign: "center"}}>No tasks added</p> : null}
+						{tasks.map(task => <TodoItem key={task.id} task={task} />)}
+					</div>
+				);
+			})()}
+			{(() => {
+				var tasks = state.tasks.filter(task => task.completed);
+				return (
+					<div className="TodoList">
+						{tasks.length === 0 ? null : <p className="TodoList__title">Completed list</p>}
+						{(!state.tasks.length === 0 && tasks.length === 0) ? <p style={{textAlign: "center"}}>None completed</p> : null}
+						{tasks.map(task => <TodoItem key={task.id} task={task} />)}
+					</div>
+				);
+			})()}
 		</div>
 	);
 }
@@ -117,6 +130,7 @@ function Todo(){
 function TodoItem({task}){
 	var {state, dispatch, ACTION_TYPES} = useGlobalContext();
 	var [dragPos, setDragPos] = useState(0);
+	var [confirm, setConfirm] = useState(false);
 	
 	function itemClickHandler(e){
 		if (e.target.className !== "TodoList__pomodoroRounds") {
@@ -132,19 +146,26 @@ function TodoItem({task}){
 	}
 	function keyDownHandler(e){
 		if (e.key === "ArrowUp") {
+			e.preventDefault();
 			dispatch({type: ACTION_TYPES.UPDATE_POMODORO, payload: {id: task.id, amount: 1}});
 		}
 		if (e.key === "ArrowDown" && task.pomodoros > 1) {
+			e.preventDefault();
 			dispatch({type: ACTION_TYPES.UPDATE_POMODORO, payload: {id: task.id, amount: -1}});
 		}
 	}
 	function dragStartHandler(e){
-		var target = e.touches?.[0] || e;
+		var target = e;
 		e.stopPropagation();
+		if (e.touches) {
+			target = e.touches[0];
+		} else {
+			var img = new Image();
+			img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
+			e.dataTransfer.setDragImage(img, 0, 0);
+		}
 		setDragPos(target.pageY);
-		var img = new Image();
-    img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
-    e.dataTransfer.setDragImage(img, 0, 0);
+		document.body.classList.add("no-scroll");
 	}
 	function dragHandler(e){
 		var target = e.touches?.[0] || e;
@@ -163,6 +184,15 @@ function TodoItem({task}){
 			dispatch({type: ACTION_TYPES.UPDATE_POMODORO, payload: {id: task.id, amount: -1}});
 		}
 		setDragPos(0);
+		document.body.classList.remove("no-scroll");
+	}
+	function deleteTodo(e){
+		if (confirm) {
+			dispatch({type: ACTION_TYPES.DELETE_TASK, payload: {id: task.id}});
+			setConfirm(false);
+			return;
+		}
+		setConfirm(true);
 	}
 	
 	return (
@@ -191,6 +221,13 @@ function TodoItem({task}){
 				</span>
 			</button>
 			<span className="TodoList__description">{task.description}</span>
+			<button
+				className={`TodoList__delete${confirm ? " TodoList__delete--confirm" : ""}`}
+				onClick={deleteTodo}
+				onBlur={() => setConfirm(false)}
+			>
+				<svg viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path></svg>
+			</button>
 		</div>
 	);
 }

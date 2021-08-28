@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import useGlobalContext from "../contexts/GlobalContext";
 import usePomodoro from "../hooks/usePomodoro";
 import "./Pomodoro.scss";
@@ -23,9 +23,9 @@ function Pomodoro(){
 	return (
 		<div className={`Pomodoro Pomodoro--${state.type}`}>
 			<div className="Pomodoro__inner">
-				{state.activeTask && <p className="Pomodoro__activeTask">Active task:&nbsp;<span>{state.activeTask.description}</span></p>}
+				{state.activeTask && <p className="Pomodoro__activeTask">{parseString(settings.title, <span>{state.activeTask.description}</span>)}</p>}
 				<DisplayTime time={convertTime(settings.duration, time)} />
-				<p className="Pomodoro__message">{parseString(settings.title, settings.duration)}</p>
+				{/* <p className="Pomodoro__message">{parseString(settings.title, settings.duration)}</p> */}
 				<div className="Pomodoro__buttons">
 					{state.started
 						? <button
@@ -101,6 +101,18 @@ function convertTime(duration, timeInSeconds){
 	return {hours: h, minutes: ("0" + m).slice(-2), seconds: ("0" + s).slice(-2)};
 }
 
-var parseString = (string, value) => string.replace("#", value);
+var parseString = (string, value) => {
+	var split = string.split("#");
+	return split.length >= 2
+		? [
+			<Fragment key="parsed-0">{split[0]}</Fragment>,
+			<Fragment key="parsed-1">{value}</Fragment>,
+			<Fragment key="parsed-2">{split[1]}</Fragment>
+		]
+		: [
+			<Fragment key="parsed-0">{split[0]}</Fragment>,
+			<Fragment key="parsed-1">{value}</Fragment>
+		];
+};
 
 export default Pomodoro;

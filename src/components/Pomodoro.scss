@@ -3,12 +3,36 @@
 	margin-bottom: 50px;
 	&--task{
 		background-color: firebrick;
+		& .Pomodoro__button--main{
+			border-color: firebrick;
+			background-color: hsl(0, 75%, 50%);
+			&:focus{
+				border: 8px solid firebrick;
+				box-shadow: 0 0 0 5px hsl(0, 75%, 50%);
+			}
+		}
 	}
 	&--break{
 		background-color: forestgreen;
+		& .Pomodoro__button--main{
+			border-color: forestgreen;
+			background-color: hsl(96, 75%, 35%);
+			&:focus{
+				border: 8px solid forestgreen;
+				box-shadow: 0 0 0 5px hsl(96, 75%, 35%);
+			}
+		}
 	}
 	&--longBreak{
 		background-color: dodgerblue;
+		& .Pomodoro__button--main{
+			border-color: dodgerblue;
+			background-color: hsl(216, 75%, 50%);
+			&:focus{
+				border: 8px solid dodgerblue;
+				box-shadow: 0 0 0 5px hsl(216, 75%, 50%);
+			}
+		}
 	}
 	&__inner{
 		position: relative;
@@ -42,19 +66,15 @@
 			transform: translate(-50%);
 			width: 100px;
 			height: 100px;
-			border: 8px solid firebrick;
+			border-width: 8px;
+			border-style: solid;
 			border-radius: 50%;
-			background-color: hsl(0, 75%, 50%);
 			& svg{
 				margin: 0.5rem;
 				fill: white;
 			}
 			&:hover{
-				background-color: hsl(0, 75%, 55%);
-			}
-			&:focus{
-				border: 8px solid firebrick;
-				box-shadow: 0 0 0 5px dodgerblue;
+				filter: brightness(1.1);
 			}
 		}
 		&--secondary{
@@ -83,9 +103,12 @@
 		}
 		&--main#{&}--disabled{
 			border: none;
-			background-color: hsl(0, 0%, 95%);
+			background-color: hsl(0, 0%, 92%);
 			& svg{
-				fill: hsl(0, 0%, 80%);
+				fill: hsl(0, 0%, 85%);
+			}
+			&:hover{
+				filter: brightness(1);
 			}
 		}
 	}
@@ -94,7 +117,7 @@
 		top: 0;
 		left: 0;
 		margin: 0;
-		padding: 0.5rem;
+		padding: 1rem;
 		font-size: 0.8rem;
 		& span{
 			color: white;
@@ -105,7 +128,7 @@
 	&__time{
 		margin: 0;
 		text-align: center;
-		padding: 3rem 0 0;
+		padding: min(3rem, 12vw) 0 0;
 		font-size: clamp(4rem, 12vw, 5rem);
 		&--hours{
 			font-size: clamp(0.9em, 11vw, 0.9em);

@@ -4,11 +4,12 @@ import useGlobalReducer from "./hooks/useGlobalReducer";
 import PomodoroTimer from "./views/PomodoroTimer";
 import {Router} from "@reach/router";
 import Settings from "./views/Settings";
+import BottomNavigation from "./components/BottomNavigation";
 
 // Define "duration" in minutes:
 const pomodoroSettings = {
 	task: {
-		title: `Start working`,
+		title: `Working on "#" -task.`,
 		duration: 0.1,
 		start: {
 			on: false,
@@ -20,7 +21,7 @@ const pomodoroSettings = {
 		}
 	},
 	break: {
-		title: `Take a # minute break`,
+		title: `Taking a break from "#" -task.`,
 		duration: 0.05,
 		start: {
 			on: true,
@@ -35,7 +36,7 @@ const pomodoroSettings = {
 		}
 	},
 	longBreak: {
-		title: `Take a long # minute break`,
+		title: `Taking a long break from "#" -task.`,
 		duration: 0.1,
 		start: {
 			on: true,
@@ -60,6 +61,7 @@ function App() {
 				<PomodoroTimer path="/" />
 				<Settings path="/settings" />
 			</Router>
+			<BottomNavigation />
 		</GlobalProvider>
 	);
 }

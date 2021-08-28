@@ -2,9 +2,18 @@
 	box-sizing: border-box;
 }
 
+:root{
+	--menu-height: 80px;
+}
+
 body {
 	margin: 0;
 	font-family: "Lato", sans-serif;
+	padding-bottom: var(--menu-height);
+	&.no-scroll{
+		overscroll-behavior-y: contain;
+		overflow-y: hidden;
+	}
 }
 
 svg {

@@ -19,6 +19,7 @@ const INITIAL_STATE = {
 const ACTION_TYPES = {
 	ACTIVE_TASK: "ACTIVE_TASK",
 	ADD_TASK: "ADD_TASK",
+	DELETE_TASK: "DELETE_TASK",
 	INCREASE_POMODOROS: "INCREASE_POMODOROS",
 	END_POMODOROS: "END_POMODOROS",
 	UPDATE_POMODORO: "UPDATE_POMODORO",
@@ -42,6 +43,8 @@ function useGlobalReducer(){
 				return {...state, activeTask: action.payload};
 			case ACTION_TYPES.ADD_TASK:
 				return {...state, tasks: [...state.tasks, {id: "id-" + state.tasks.length, ...action.payload, completed: false}]};
+			case ACTION_TYPES.DELETE_TASK:
+				return {...state, tasks: state.tasks.filter(task => task.id !== action.payload.id)};
 			case ACTION_TYPES.INCREASE_POMODOROS:
 				return {...state, pomodoros: state.pomodoros + 1};
 			case ACTION_TYPES.END_POMODOROS:

@@ -1,3 +1,31 @@
 .Settings{
-	
+	padding: 1rem;
+	max-width: 500px;
+	margin: 0 auto;
+	&__title{
+		margin: 0 0 2rem;
+	}
+	&__toggle{
+		padding: 0 1rem;
+		height: 48px;
+		border-top: 1px solid lightgray;
+		border-bottom: 1px solid lightgray;
+		&:hover{
+			background-color: hsl(0, 0%, 95%);
+		}
+		&:not(:first-child){
+			margin-top: 1rem;
+		}
+	}
+	&__lamp{
+		height: 0;
+		overflow-y: hidden;
+		transition: height .3s;
+		& p{
+			margin: 0;
+		}
+		&--active{
+			height: 150px;
+		}
+	}
 }

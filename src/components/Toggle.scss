@@ -1,0 +1,39 @@
+.Toggle{
+	--handle-size: 32px;
+	--track-height: 20px;
+	--track-width: 48px;
+	--track-offset: calc((var(--track-height) - var(--handle-size)) / 2);
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	cursor: pointer;
+	&__control{
+		position: relative;
+	}
+	&__handle{
+		position: absolute;
+		top: 50%;
+		left: var(--track-offset);
+		transform: translateY(-50%);
+		display: block;
+		width: var(--handle-size);
+		height: var(--handle-size);
+		box-sizing: border-box;
+		transition: left .15s;
+		border-radius: 50%;
+		background-color: hsl(0, 0%, 75%);
+		&--on{
+			background-color: firebrick;
+			left: calc(var(--track-width) - var(--handle-size) - var(--track-offset));
+		}
+	}
+	&__track{
+		display: block;
+		width: var(--track-width);
+		height: var(--track-height);
+		box-sizing: border-box;
+		border-radius: calc(var(--track-height) / 2);
+		background-color: hsl(0, 0%, 85%);
+	}
+}

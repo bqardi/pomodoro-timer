@@ -1,16 +1,20 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import useGlobalContext from "../contexts/GlobalContext";
 
-const LAMP_ACTIVE = true;
 const BRIDGE_IP = "192.168.8.100";
-const USERNAME = "dIGh1wcvRpTmikzdRTySDt46Tq3NFvtaa8ZnX3sd";
-const LAMP_ID = "13";
+const USERNAME = "IGRYQ4tZgqndWROm9nQI6MlLCAnoiuDXm016DBQ9";
+const LAMP_ID = "9";
 
 function useLamp(){
+	var {lamp} = useGlobalContext();
 	var [data, setData] = useState({});
 
 	async function getData(){
-		if (!LAMP_ACTIVE) return;
+		if (!lamp) {
+			setData({on: false});
+			return;
+		};
 		try {
 			const result = await axios.get(`https://${BRIDGE_IP}/api/${USERNAME}/lights/${LAMP_ID}`);
 			setData(result.data.state);

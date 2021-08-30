@@ -12,7 +12,8 @@ const INITIAL_STATE = {
 	lamp: {
 		data: null,
 		control: null
-	}
+	},
+	showForm: true
 };
 
 // Define action types here (fake enums)
@@ -32,10 +33,11 @@ const ACTION_TYPES = {
 		RESET: "RESET",
 		RUNNING: "RUNNING"
 	},
-	LAMP: "LAMP"
+	LAMP: "LAMP",
+	TOGGLE_FORM: "TOGGLE_FORM"
 }
 
-// Usage: dispatch({type: ACTION_TYPES.HAS_TASK, payload: true/false})
+// Usage: dispatch({type: ACTION_TYPES.DELETE_TASK, payload: {id: the_id}});
 function useGlobalReducer(){
 	var [state, dispatch] = useReducer((state, action) => {
 		switch (action.type) {
@@ -89,6 +91,8 @@ function useGlobalReducer(){
 				return INITIAL_STATE;
 			case ACTION_TYPES.LAMP:
 				return {...state, lamp: {...action.payload}};
+			case ACTION_TYPES.TOGGLE_FORM:
+				return {...state, showForm: !state.showForm};
 				
 			default:
 				throw new Error("Error in the reducer function! This shouldn't happen!");

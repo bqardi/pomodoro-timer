@@ -1,0 +1,9 @@
+.InputField{
+	display: flex;
+	&__label{
+		width: 100px;
+	}
+	&__input{
+		flex: 1;
+	}
+}

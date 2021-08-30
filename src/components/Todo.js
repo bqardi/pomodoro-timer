@@ -3,11 +3,11 @@ import useGlobalContext from "../contexts/GlobalContext";
 import "./Todo.scss";
 
 function Todo(){
-	var {state, dispatch, ACTION_TYPES} = useGlobalContext();
+	var {state, dispatch, ACTION_TYPES, moveCompleted} = useGlobalContext();
 	var [description, setDescription] = useState("");
 	var [pomodoros, setPomodoros] = useState(1);
 	var [error, setError] = useState("");
-	
+
 	function addTask(e){
 		e.preventDefault();
 		if (!description) {
@@ -49,62 +49,70 @@ function Todo(){
 
 	return (
 		<div className="Todo">
-			<form className="Todo__form" onSubmit={addTask}>
-				<div className="Todo__field">
-					<label htmlFor="pomodoros" className="Todo__label">Pomodoro rounds</label>
-					<div className="Todo__description">
-						<input
-							id="pomodoros"
-							type="number"
-							min="1"
-							className="Todo__input"
-							value={pomodoros}
-							onChange={pomodorosChangeHandler}
-						/>
-						<div className="Todo__float">
-							<button
-								type="button"
-								className="Todo__button"
-								onClick={() => setPomodoros(prev => prev === 1 ? 1 : prev - 1)}
-								title="Decrease pomodoros"
-								tabIndex="-1"
-							>
-								<svg viewBox="0 0 24 24"><path d="M19,13H5V11H19V13Z"></path></svg>
-							</button>
-							<button
-								type="button"
-								className="Todo__button"
-								onClick={() => setPomodoros(prev => prev + 1)}
-								title="Increase pomodoros"
-								tabIndex="-1"
-							>
-								<svg viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path></svg>
-							</button>
-						</div>
-					</div>
-				</div>
-				<div className="Todo__field">
-					<label htmlFor="task" className="Todo__label">Task description</label>
-					<div className="Todo__description">
-						<input
-							id="task"
-							type="text"
-							className={`Todo__input${error ? " Todo__input--error" : ""}`}
-							placeholder="My first task"
-							value={description}
-							onChange={descriptionChangeHandler}
-						/>
-						<div className="Todo__float">
-							<button type="submit" className="Todo__button" title="Add to list">
-								<svg viewBox="0 0 24 24"><path d="M2,16H10V14H2M18,14V10H16V14H12V16H16V20H18V16H22V14M14,6H2V8H14M14,10H2V12H14V10Z"></path></svg>
-							</button>
-						</div>
-					</div>
-					{error && <p className="Todo__error">{error}</p>}
-				</div>
-			</form>
+			{state.showForm
+				? (
+						<form className="Todo__form" onSubmit={addTask}>
+							<div className="Todo__field">
+								<label htmlFor="pomodoros" className="Todo__label">Pomodoro rounds</label>
+								<div className="Todo__description">
+									<input
+										id="pomodoros"
+										type="number"
+										min="1"
+										className="Todo__input"
+										value={pomodoros}
+										onChange={pomodorosChangeHandler}
+									/>
+									<div className="Todo__float">
+										<button
+											type="button"
+											className="Todo__button"
+											onClick={() => setPomodoros(prev => prev === 1 ? 1 : prev - 1)}
+											title="Decrease pomodoros"
+											tabIndex="-1"
+										>
+											<svg viewBox="0 0 24 24"><path d="M19,13H5V11H19V13Z"></path></svg>
+										</button>
+										<button
+											type="button"
+											className="Todo__button"
+											onClick={() => setPomodoros(prev => prev + 1)}
+											title="Increase pomodoros"
+											tabIndex="-1"
+										>
+											<svg viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path></svg>
+										</button>
+									</div>
+								</div>
+							</div>
+							<div className="Todo__field">
+								<label htmlFor="task" className="Todo__label">Task description</label>
+								<div className="Todo__description">
+									<input
+										id="task"
+										type="text"
+										className={`Todo__input${error ? " Todo__input--error" : ""}`}
+										placeholder="My first task"
+										value={description}
+										onChange={descriptionChangeHandler}
+									/>
+									<div className="Todo__float">
+										<button type="submit" className="Todo__button" title="Add to list">
+											<svg viewBox="0 0 24 24"><path d="M2,16H10V14H2M18,14V10H16V14H12V16H16V20H18V16H22V14M14,6H2V8H14M14,10H2V12H14V10Z"></path></svg>
+										</button>
+									</div>
+								</div>
+								{error && <p className="Todo__error">{error}</p>}
+							</div>
+						</form>
+					)
+				: null
+			}
 			{(() => {
-				var tasks = state.tasks.filter(task => !task.completed);
+				var tasks = state.tasks;
+				if (moveCompleted) {
+					tasks = state.tasks.filter(task => !task.completed);
+				}
 				return (
 					<div className="TodoList">
 						{(state.tasks.length === 0 && tasks.length === 0) ? null : <p className="TodoList__title">Task list</p>}
@@ -114,10 +122,11 @@ function Todo(){
 				);
 			})()}
 			{(() => {
+				if (!moveCompleted) return null;
 				var tasks = state.tasks.filter(task => task.completed);
 				return (
 					<div className="TodoList">
-						{tasks.length === 0 ? null : <p className="TodoList__title">Completed list</p>}
+						{tasks.length === 0 ? null : <p className="TodoList__title">Completed tasks</p>}
 						{(!state.tasks.length === 0 && tasks.length === 0) ? <p style={{textAlign: "center"}}>None completed</p> : null}
 						{tasks.map(task => <TodoItem key={task.id} task={task} />)}
 					</div>

@@ -8,12 +8,6 @@ function Pomodoro(){
 	var {startTimer, pauseTimer, stopTimer, skip, time, settings} = usePomodoro();
 
 	useEffect(() => {
-		if (state.pomodoros > 1 && state.activeTask !== null) {
-			dispatch({type: ACTION_TYPES.UPDATE_POMODORO, payload: {id: state.activeTask.id, amount: -1}});
-		}
-		// eslint-disable-next-line
-	}, [state.pomodoros, dispatch, ACTION_TYPES]);
-	useEffect(() => {
 		if (state.activeTask === null) {
 			stopTimer();
 		}
@@ -25,7 +19,6 @@ function Pomodoro(){
 			<div className="Pomodoro__inner">
 				{state.activeTask && <p className="Pomodoro__activeTask">{parseString(settings.title, <span>{state.activeTask.description}</span>)}</p>}
 				<DisplayTime time={convertTime(settings.duration, time)} />
-				{/* <p className="Pomodoro__message">{parseString(settings.title, settings.duration)}</p> */}
 				<div className="Pomodoro__buttons">
 					{state.started
 						? <button
@@ -74,6 +67,7 @@ function Pomodoro(){
 					Pomodoro:&nbsp;
 					<span>#{state.pomodoros}</span>
 				</p>
+				<button className="Pomodoro__btnShow" onClick={() => dispatch({type: ACTION_TYPES.TOGGLE_FORM})}>{state.showForm ? "Hide form" : "Show form"}</button>
 			</div>
 		</div>
 	);

@@ -9,17 +9,18 @@ function Toggle({children, className, initial, onToggle}){
 	}, [on]);
 
 	return (
-		<div
+		<button
 			className={`Toggle${className ? " " + className : ""}`}
 			onClick={() => setOn(prev => !prev)}
 			tabIndex="0"
+			type="button"
 		>
 			<span>{children}</span>
 			<span className="Toggle__control">
 				<span className={`Toggle__handle${on ? " Toggle__handle--on" : ""}`}></span>
 				<span className="Toggle__track"></span>
 			</span>
-		</div>
+		</button>
 	);
 }
 

@@ -160,4 +160,18 @@
 			font-size: 1.1rem;
 		}
 	}
+	&__btnShow{
+		position: absolute;
+		bottom: -50px;
+		right: 1rem;
+		border: none;
+		background-color: transparent;
+		cursor: pointer;
+		text-decoration: underline;
+		color: hsla(0, 0%, 0%, 0.75);
+		font-size: 0.8rem;
+		&:hover{
+			color: dodgerblue;
+		}
+	}
 }

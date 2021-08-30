@@ -4,7 +4,7 @@ import useTimer from "./useTimer";
 import useLamp from "./useLamp";
 
 function usePomodoro(){
-	var {state, dispatch, ACTION_TYPES, pomodoroSettings} = useGlobalContext();
+	var {state, dispatch, ACTION_TYPES, pomodoroSettings, autostartBreak} = useGlobalContext();
 	var {time, start, pause, resume, stop} = useTimer();
 	var {control} = useLamp();
 
@@ -43,6 +43,9 @@ function usePomodoro(){
 	function pomodoroEnd(){
 		stopTimer();
 		dispatch({type: ACTION_TYPES.END_POMODOROS});
+		if (state.type !== "task") {
+			dispatch({type: ACTION_TYPES.UPDATE_POMODORO, payload: {id: state.activeTask.id, amount: -1}});
+		}
 	}
 	
 	useEffect(() => {
@@ -52,7 +55,7 @@ function usePomodoro(){
 		// eslint-disable-next-line
 	}, [time]);
 	useEffect(() => {
-		if (state.type !== "task") {
+		if (autostartBreak && state.type !== "task") {
 			startTimer();
 		}
 		// eslint-disable-next-line

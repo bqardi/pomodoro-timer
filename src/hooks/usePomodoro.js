@@ -42,7 +42,7 @@ function usePomodoro(){
 	}
 	function pomodoroEnd(){
 		stopTimer();
-		dispatch({type: ACTION_TYPES.END_POMODOROS});
+		dispatch({type: ACTION_TYPES.END_POMODOROS, payload: state.pomodoros % pomodoroSettings.longBreakInterval === 0});
 		if (state.type !== "task") {
 			dispatch({type: ACTION_TYPES.UPDATE_POMODORO, payload: {id: state.activeTask.id, amount: -1}});
 		}

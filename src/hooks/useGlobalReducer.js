@@ -9,10 +9,6 @@ const INITIAL_STATE = {
 	started: false,
 	running: false,
 	paused: false,
-	lamp: {
-		data: null,
-		control: null
-	},
 	showForm: true
 };
 
@@ -33,7 +29,6 @@ const ACTION_TYPES = {
 		RESET: "RESET",
 		RUNNING: "RUNNING"
 	},
-	LAMP: "LAMP",
 	TOGGLE_FORM: "TOGGLE_FORM"
 }
 
@@ -53,7 +48,7 @@ function useGlobalReducer(){
 				let type = "task";
 				let pomodoros = state.pomodoros;
 				if (state.type === "task") {
-					type = state.pomodoros % 4 === 0 ? "longBreak" : "break";
+					type = action.payload ? "longBreak" : "break";
 				} else {
 					pomodoros++
 				}
@@ -89,8 +84,6 @@ function useGlobalReducer(){
 				return {...state, running: action.payload};
 			case ACTION_TYPES.TIMER.RESET:
 				return INITIAL_STATE;
-			case ACTION_TYPES.LAMP:
-				return {...state, lamp: {...action.payload}};
 			case ACTION_TYPES.TOGGLE_FORM:
 				return {...state, showForm: !state.showForm};
 				

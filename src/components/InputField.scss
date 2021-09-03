@@ -1,9 +1,22 @@
 .InputField{
 	display: flex;
 	&__label{
-		width: 100px;
+		width: 85px;
 	}
 	&__input{
 		flex: 1;
+		padding: 0.25rem 0.5rem;
+		margin-bottom: 0.5rem;
+		min-width: 100px;
+	}
+	&__button{
+		padding: 0.4rem 0.75rem;
+		color: white;
+		border: none;
+		background-color: firebrick;
+		border-radius: 3px;
+		&:hover{
+			filter: brightness(1.1);
+		}
 	}
 }

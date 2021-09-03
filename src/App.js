@@ -6,9 +6,11 @@ import {Router} from "@reach/router";
 import Settings from "./views/Settings";
 import BottomNavigation from "./components/BottomNavigation";
 import useLocalStorage from "./hooks/useLocalStorage";
+import { useCookies } from "react-cookie";
 
 // Define "duration" in minutes:
-const pomodoroSettings = {
+const initialPomodoroSettings = {
+	longBreakInterval: 4,
 	task: {
 		title: `Working on "#" -task.`,
 		duration: 0.1,
@@ -77,17 +79,20 @@ const pomodoroSettings = {
 
 function App() {
 	var {state, dispatch, ACTION_TYPES} = useGlobalReducer();
+	var [cookies, setCookie] = useCookies(["lampSettings"]);
 	var [moveCompleted, setMoveCompleted] = useLocalStorage("moveCompleted", true);
 	var [autostartBreak, setAutostartBreak] = useLocalStorage("autostartBreak", false);
-	var [lamp, setLamp] = useLocalStorage("lamp", false);
+	var [lampOn, setLampOn] = useLocalStorage("lampOn", false);
+	var [pomodoroSettings, setPomodoroSettings] = useLocalStorage("pomodoroSettings", initialPomodoroSettings);
 	
 	return (
 		<GlobalProvider value={{
 			state, dispatch, ACTION_TYPES,
-			pomodoroSettings,
+			pomodoroSettings, setPomodoroSettings,
+			cookies, setCookie,
 			moveCompleted, setMoveCompleted,
 			autostartBreak, setAutostartBreak,
-			lamp, setLamp
+			lampOn, setLampOn
 		}}>
 			<Router>
 				<PomodoroTimer path="/" />

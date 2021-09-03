@@ -1,8 +1,15 @@
 import { useState } from "react";
+import useDebounce from "../hooks/useDebounce";
 import "./InputField.scss";
 
-function InputField({label, name, type="text"}){
-	var [value, setValue] = useState("");
+function InputField({label, name, type="text", value="", onValue}){
+	var [inputValue, setInputValue] = useState(value);
+	var debounce = useDebounce();
+
+	function updateValue(e){
+		setInputValue(e.target.value);
+		onValue && debounce(() => onValue(e.target.value));
+	}
 	
 	return (
 		<div className="InputField">
@@ -11,8 +18,8 @@ function InputField({label, name, type="text"}){
 				className="InputField__input"
 				type={type}
 				name={name}
-				value={value}
-				onChange={e => setValue(e.target.value)}
+				value={inputValue}
+				onChange={updateValue}
 			/>
 		</div>
 	);

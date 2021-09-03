@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import InputField from "../components/InputField";
 import Toggle from "../components/Toggle";
 import useGlobalContext from "../contexts/GlobalContext";
@@ -9,37 +9,65 @@ function Settings(){
 	var {
 		moveCompleted, setMoveCompleted,
 		autostartBreak, setAutostartBreak,
-		lamp, setLamp
+		lampOn, setLampOn,
+		cookies, setCookie,
+		pomodoroSettings, setPomodoroSettings
 	} = useGlobalContext();
-	var {data, control} = useLamp();
+	var {getData, control} = useLamp();
 
-	function testLamp(){
-		control({
-			on: !data.on,
-			sat: 0,
-			bri: 100,
-			hue: 0
-		});
-	}
+	var [data, setData] = useState({});
 
 	useEffect(() => {
-		if (!lamp) control({on: false});
-	}, [lamp, control]);
+		if (data.hasOwnProperty("on")) {
+			control({
+				on: !data.on,
+				sat: 0,
+				bri: 100,
+				hue: 0
+			});
+		}
+	}, [data, control]);
 
 	return (
 		<main className="Settings">
 			<h1 className="Settings__title">Settings</h1>
 			<form>
-				<Toggle initial={lamp} onToggle={setLamp} className="Settings__toggle">
+				<Toggle initial={lampOn} onToggle={setLampOn} className="Settings__toggle">
 					Use Philips hue
 				</Toggle>
-				<div className={`Settings__lamp${lamp ? " Settings__lamp--active" : ""}`}>
+				<div className={`Settings__lamp${lampOn ? " Settings__lamp--active" : ""}`}>
 					<div className="Settings__inner">
-						<InputField name="ip" label="IP:" />
-						<InputField name="username" label="Username:" />
-						<InputField name="lampid" label="Lamp ID:" />
-						<label>Color settings</label>
-						<button onClick={testLamp} type="button">{data.on ? "Switch off" : "Switch on"}</button>
+						<InputField
+							name="ip"
+							label="IP:"
+							value={cookies.lampSettings?.ip || ""}
+							onValue={value => setCookie("lampSettings", {
+								...cookies.lampSettings,
+								ip: value
+							})}
+						/>
+						<InputField
+							name="username"
+							label="Username:"
+							value={cookies.lampSettings?.username || ""}
+							onValue={value => setCookie("lampSettings", {
+								...cookies.lampSettings,
+								username: value
+							})}
+						/>
+						<InputField
+							name="lampid"
+							label="Lamp ID:"
+							value={cookies.lampSettings?.lampid || ""}
+							onValue={value => setCookie("lampSettings", {
+								...cookies.lampSettings,
+								lampid: value
+							})}
+						/>
+						<div className="InputField">
+							<label className="InputField__label">Test lamp:</label>
+							<button className="InputField__button" onClick={() => getData(data => setData(data))} type="button">{data.on ? "Switch off" : "Switch on"}</button>
+						</div>
 					</div>
 				</div>
 				<Toggle initial={autostartBreak} onToggle={setAutostartBreak} className="Settings__toggle">
@@ -56,6 +84,61 @@ function Settings(){
 				{/* Move to completed list (or not) */}
 				{/* Time: task, break, long break, pomodoros before long break */}
 				{/*  */}
+				<div className="Settings__inner">
+					<InputField
+						name="task"
+						label="Task time:"
+						value={pomodoroSettings.task.duration || ""}
+						onValue={value => setPomodoroSettings(prev => {
+							return {
+								...prev,
+								task: {
+									...prev.task,
+									duration: value
+								}
+							}
+						})}
+					/>
+					<InputField
+						name="break"
+						label="Break time:"
+						value={pomodoroSettings.break.duration || ""}
+						onValue={value => setPomodoroSettings(prev => {
+							return {
+								...prev,
+								break: {
+									...prev.break,
+									duration: value
+								}
+							}
+						})}
+					/>
+					<InputField
+						name="long-break"
+						label="Long break:"
+						value={pomodoroSettings.longBreak.duration || ""}
+						onValue={value => setPomodoroSettings(prev => {
+							return {
+								...prev,
+								longBreak: {
+									...prev.longBreak,
+									duration: value
+								}
+							}
+						})}
+					/>
+					<InputField
+						name="long-break-interval"
+						label="Interval:"
+						value={pomodoroSettings.longBreakInterval || ""}
+						onValue={value => setPomodoroSettings(prev => {
+							return {
+								...prev,
+								longBreakInterval: value
+							}
+						})}
+					/>
+				</div>
 			</form>
 		</main>
 	);

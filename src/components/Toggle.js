@@ -6,7 +6,7 @@ function Toggle({children, className, initial, onToggle}){
 
 	useEffect(() => {
 		onToggle && onToggle(on);
-	}, [on]);
+	}, [on, onToggle]);
 
 	return (
 		<button
